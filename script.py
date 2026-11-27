@@ -1260,17 +1260,12 @@ def _geo_exit_ip_for_config(uri: str) -> str | None:
 
 
 def _geo_country_flag(country: str) -> str:
-    """Return the country flag as literal UTF-8 percent-encoded bytes.
-
-    This deliberately builds the %XX sequences directly instead of relying on
-    a URL encoder, ensuring that no actual Unicode flag emoji enters a remark.
-    """
+    """Return the country flag as a literal Unicode emoji."""
     country = country.strip().upper()
     if not re.fullmatch(r"[A-Z]{2}", country):
         return ""
 
-    flag = "".join(chr(ord(char) + 127397) for char in country)
-    return "".join(f"%{byte:02X}" for byte in flag.encode("utf-8"))
+    return "".join(chr(ord(char) + 127397) for char in country)
 
 
 def _geo_replace_remark(uri: str, remark: str) -> str:
